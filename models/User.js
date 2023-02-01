@@ -20,6 +20,9 @@ const UserSchema = new Schema({
         type:Boolean,
         default:false,
     }
+},{
+versionKey:false,
+timestamps:true,
 })
 
 module.exports = model("User", UserSchema)

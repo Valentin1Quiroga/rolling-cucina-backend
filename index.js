@@ -7,6 +7,8 @@ require("dotenv").config()
 connectDB()
 const PORT = process.env.PORT;
 
+app.use(express.json())
+
 app.use("/users", usersRoutes)
 
 app.listen(4500,()=>{console.log("Server listening on port "+ PORT );})
