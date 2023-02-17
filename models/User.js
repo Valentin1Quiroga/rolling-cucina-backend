@@ -13,7 +13,6 @@ const UserSchema = new Schema({
     },
     password:{
         type:String,
-        select:false,
         required:[true, "La contraseña es obligatoria"]
     },
     admin:{
