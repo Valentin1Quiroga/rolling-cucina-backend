@@ -22,8 +22,21 @@ const addMenu = async (req,res) =>{
 
     }
 }
+const deleteMenu = async(req,res)=>{
+    try {
+        const {id} = req.body
+        const menuRemoved = await Menu.findByIdAndDelete(id);
+      if (!menuRemoved) throw new CustomError("El menu no está actualmente en nuestra carta", 404);
+      res.status(200).json({ message: "Menu borrado" });
+    } catch (error) {
+        res
+        .status(error.code || 500)
+        .json({ message: error.message || "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde." });
+    }
+}
 
 module.exports = {
     getMenu,
-    addMenu
+    addMenu,
+    deleteMenu
 }
