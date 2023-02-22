@@ -10,7 +10,7 @@ const getMenu = async (req,res) =>{
     } catch (error) {
         res.status(error.code || 500).json({message: "Ocurrio un error. Motivo: "+ error.message})
     }
-}
+};
 
 //Controlador POST con el cual se agrega un nuevo menu a la carta
 const addMenu = async (req,res) =>{
