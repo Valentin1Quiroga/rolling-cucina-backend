@@ -4,6 +4,7 @@ const router = Router();
 
 const {
   getUsers,
+  getAuth,
   addUser,
   login,
   deleteUser,
@@ -13,6 +14,7 @@ const validateFields = require("../middlewares/validateFields");
 const { checkIfUserExists } = require("../utils/customValidations");
 
 router.get("/", getUsers);
+router.get("/auth",auth, getAuth);
 router.post(
   "/",
   [
@@ -46,7 +48,7 @@ router.post(
 router.delete(
   "/",
   [
-   
+   auth,
     check("id").not().isEmpty().isMongoId().custom(checkIfUserExists),
     validateFields,
   ],

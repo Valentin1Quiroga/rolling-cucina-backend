@@ -1,6 +1,9 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
 
+const validateFields = require("../middlewares/validateFields");
+
+
 const {
   getMenu,
   addMenu,
@@ -28,9 +31,10 @@ router.post(
     check("price")
       .isFloat({ min: 0 })
       .withMessage("El precio debe ser mayor a 0"),
+      validateFields,
   ],
   addMenu
 );
-router.delete("/", [check("id").not().isEmpty().isMongoId()], deleteMenu);
+router.delete("/", [check("id").not().isEmpty().isMongoId(), validateFields], deleteMenu);
 
 module.exports = router;
