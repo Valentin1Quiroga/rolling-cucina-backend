@@ -12,6 +12,7 @@ const {
 } = require("../controllers/usersControllers");
 const auth = require("../middlewares/auth");
 const validateFields = require("../middlewares/validateFields");
+const verifyRole = require("../middlewares/verifyRole");
 const { checkIfUserExists } = require("../utils/customValidations");
 
 router.get("/", getUsers);
@@ -56,6 +57,7 @@ router.delete(
   "/",
   [
     auth,
+    verifyRole,
     check("id").not().isEmpty().isMongoId().custom(checkIfUserExists),
     validateFields,
   ],
