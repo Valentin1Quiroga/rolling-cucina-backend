@@ -38,8 +38,24 @@ const deletePedido = async (req, res) => {
     }
   };
 
+  const editPedido = async (req,res) =>{
+    try {
+      const {id, fields} =req.body;
+      const pedidoModified = await User.findByIdAndUpdate(id,fields,{new:true})
+      res.status(200).json({message:"El usuario ha sido editado con éxito", pedidoModified})
+    } catch (error) {
+      res
+      .status(error.code || 500)
+      .json({
+        message:
+          error.message ||
+          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+      })
+    }
+}
   module.exports = {
     getPedido,
     addPedido,
     deletePedido,
+    editPedido
   }

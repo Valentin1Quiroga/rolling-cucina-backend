@@ -105,10 +105,27 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const editUser = async (req,res) =>{
+    try {
+      const {id, fields} =req.body;
+      const userModified = await User.findByIdAndUpdate(id,fields,{new:true})
+      res.status(200).json({message:"El usuario ha sido editado con éxito", userModified})
+    } catch (error) {
+      res
+      .status(error.code || 500)
+      .json({
+        message:
+          error.message ||
+          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+      })
+    }
+}
+
 module.exports = {
   getUsers,
   getAuth,
   addUser,
   login,
   deleteUser,
+  editUser,
 };
