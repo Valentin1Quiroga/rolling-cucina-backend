@@ -41,8 +41,8 @@ const deletePedido = async (req, res) => {
   const editPedido = async (req,res) =>{
     try {
       const {id, fields} =req.body;
-      const pedidoModified = await User.findByIdAndUpdate(id,fields,{new:true})
-      res.status(200).json({message:"El usuario ha sido editado con éxito", pedidoModified})
+      const updatedPedido = await User.findByIdAndUpdate(id,fields,{new:true})
+      res.status(200).json({message:"El usuario ha sido editado con éxito", updatedPedido})
     } catch (error) {
       res
       .status(error.code || 500)
