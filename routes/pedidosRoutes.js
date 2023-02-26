@@ -10,6 +10,7 @@ const {
   editPedido,
 } = require("../controllers/pedidosControllers");
 const auth = require("../middlewares/auth");
+const verifyRole = require("../middlewares/verifyRole");
 const router = Router();
 
 router.get("/", getPedido);
