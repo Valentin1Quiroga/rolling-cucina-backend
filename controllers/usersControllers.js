@@ -41,6 +41,8 @@ const addUser = async (req, res) => {
     const { name, phone, email, password, admin } = req.body;
     const salt = await bcrypt.genSalt(10);
     const passwordEncrypted = await bcrypt.hash(password, salt);
+    const existingUser = await User.findOne({email:req.body.email})
+    if(existingUser) throw new CustomError("Ya existe un usuario con ese Correo", 401);
     const newUser = new User({
       name,
       phone,
@@ -79,12 +81,8 @@ const login = async (req, res) => {
       .json({ message: "Ingreso correcto", ok: true, user, token });
   } catch (error) {
     res
-      .status(error.code || 500)
-      .json({
-        message:
-          error.message ||
-          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-      });
+    .status(error.code || 500)
+    .json({ message: error.message || "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde." });
   }
 };
 
@@ -108,8 +106,8 @@ const deleteUser = async (req, res) => {
 const editUser = async (req,res) =>{
     try {
       const {id, fields} =req.body;
-      const userModified = await User.findByIdAndUpdate(id,fields,{new:true})
-      res.status(200).json({message:"El usuario ha sido editado con éxito", userModified})
+      const updatedUser = await User.findByIdAndUpdate(id,fields,{new:true})
+      res.status(200).json({message:"El usuario ha sido editado con éxito", updatedUser})
     } catch (error) {
       res
       .status(error.code || 500)
