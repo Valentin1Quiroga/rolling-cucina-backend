@@ -9,7 +9,9 @@ const {
   // getSearchedMenu,
   addMenu,
   deleteMenu,
+  editMenu,
 } = require("../controllers/menuControllers");
+const auth = require("../middlewares/auth");
 const router = Router();
 
 router.get("/", getMenu);
@@ -38,5 +40,15 @@ router.post(
   addMenu
 );
 router.delete("/", [check("id").not().isEmpty().isMongoId(), validateFields], deleteMenu);
+router.put(
+  "/",
+  [
+    auth,
+    check("id").not().isEmpty().isMongoId(),
+    validateFields,
+  ],
+  editMenu
+);
+
 
 module.exports = router;

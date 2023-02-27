@@ -51,11 +51,27 @@ const deleteMenu = async(req,res)=>{
 }
 
 //Controlador del pedido PUT, a traves del cual podremos editar un menu que se encuentra disponible en la carta.
+const editMenu = async (req,res) =>{
+    try {
+      const {id, fields} =req.body;
+      const menuModified = await User.findByIdAndUpdate(id,fields,{new:true})
+      res.status(200).json({message:"El menu ha sido editado con éxito", menuModified})
+    } catch (error) {
+      res
+      .status(error.code || 500)
+      .json({
+        message:
+          error.message ||
+          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+      })
+    }
+}
 
 
 module.exports = {
     getMenu,
     // getSearchedMenu,
     addMenu,
-    deleteMenu
+    deleteMenu,
+    editMenu
 }

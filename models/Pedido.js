@@ -10,6 +10,11 @@ const PedidoSchema = new Schema({
         type: Array,
         required: [true, "Para hacer un pedido debes elegir un plato del menu."]
     },
+    total:{
+        type:Number,
+        required:[true, "El pedido debe tener un costo"],
+        min:[0,"El total debe ser mayor a 0"]
+    },
     status:{
         type: String,
         enum:["pendiente","preparando","listo para entrega","entregado"],
@@ -21,3 +26,5 @@ const PedidoSchema = new Schema({
     versionKey:false,
     timestamps:true
 })
+
+module.exports= model("Pedido", PedidoSchema)

@@ -24,7 +24,7 @@ versionKey:false,
 timestamps:true,
 });
 
-UserSchema.methods.toJson = function () {
+UserSchema.methods.toJSON = function () {
     const {password, ...user} = this.toObject();
     return user;
 }
