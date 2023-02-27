@@ -6,12 +6,14 @@ const validateFields = require("../middlewares/validateFields");
 
 const {
   getMenu,
+  // getSearchedMenu,
   addMenu,
   deleteMenu,
 } = require("../controllers/menuControllers");
 const router = Router();
 
 router.get("/", getMenu);
+// router.get("/:name?", getSearchedMenu);
 router.post(
   "/",
   [

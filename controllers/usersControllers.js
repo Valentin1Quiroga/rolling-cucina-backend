@@ -36,6 +36,7 @@ const getAuth = async (req, res) => {
   }
 };
 
+
 const addUser = async (req, res) => {
   try {
     const { name, phone, email, password, admin } = req.body;

@@ -11,7 +11,18 @@ const getMenu = async (req,res) =>{
         res.status(error.code || 500).json({message: "Ocurrio un error. Motivo: "+ error.message})
     }
 };
-
+// const getSearchedMenu = async (req,res)=>{
+//     try {
+//         const {name} = req.params;
+//     const menu = await Menu.findOne({name:name});
+//     if(!menu) throw new CustomError("Ese menu no se encuentra en la carta", 401);
+//     res.status(200).json({ menu });
+//     } catch (error) {
+//         res
+//         .status(error.code || 500)
+//         .json({ message: error.message || "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde." });      
+//     }
+// }
 //Controlador POST con el cual se agrega un nuevo menu a la carta
 const addMenu = async (req,res) =>{
     try {
@@ -44,6 +55,7 @@ const deleteMenu = async(req,res)=>{
 
 module.exports = {
     getMenu,
+    // getSearchedMenu,
     addMenu,
     deleteMenu
 }
