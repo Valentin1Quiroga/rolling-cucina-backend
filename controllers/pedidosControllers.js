@@ -7,13 +7,24 @@ const getPedido = async (req, res) => {
     const pedidos = await Pedido.find();
     res.status(200).json({ pedidos });
   } catch (error) {
-    res
-      .status(error.code || 500)
-      .json({
-        message:
-          error.message ||
-          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-      });
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
+  }
+};
+const getUserPedido = async (req, res) => {
+  try {
+    const id = req.id;
+    const pedidos = await Pedido.find((user = id));
+    res.status(200).json({ pedidos });
+  } catch (error) {
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
   }
 };
 
@@ -23,21 +34,17 @@ const addPedido = async (req, res) => {
     const newPedido = new Pedido(req.body);
     const pedido = await newPedido.save();
     if (!pedido) throw new CustomError("Fallo el guardado");
-    res
-      .status(201)
-      .json({
-        message:
-          "El pedido se realizó correctamente y está pendiente de realizarse. Pronto comenzaran a prepararlo. Muchas gracias.",
-        pedido,
-      });
+    res.status(201).json({
+      message:
+        "El pedido se realizó correctamente y está pendiente de realizarse. Pronto comenzaran a prepararlo. Muchas gracias.",
+      pedido,
+    });
   } catch (error) {
-    res
-      .status(error.code || 500)
-      .json({
-        message:
-          error.message ||
-          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-      });
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
   }
 };
 
@@ -53,13 +60,11 @@ const deletePedido = async (req, res) => {
       );
     res.status(200).json({ message: "Pedido borrado" });
   } catch (error) {
-    res
-      .status(error.code || 500)
-      .json({
-        message:
-          error.message ||
-          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-      });
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
   }
 };
 
@@ -82,6 +87,7 @@ const editPedido = async (req, res) => {
 };
 module.exports = {
   getPedido,
+  getUserPedido,
   addPedido,
   deletePedido,
   editPedido,
