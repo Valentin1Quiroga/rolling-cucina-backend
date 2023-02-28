@@ -6,16 +6,17 @@ const CustomError = require("../utils/CustomErrors");
 
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
-    res.status(200).json({ users });
+    let users;
+    let counts;
+    [users, counts] = await Promise.all([User.find(), User.countDocuments()]);
+
+    res.status(200).json({ users, counts });
   } catch (error) {
-    res
-      .status(error.code || 500)
-      .json({
-        message:
-          error.message ||
-          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-      });
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
   }
 };
 
@@ -23,16 +24,14 @@ const getAuth = async (req, res) => {
   try {
     const id = req.id;
     const user = await User.findById(id);
-    if(!user) throw new CustomError("Fallo en la autenticación", 401);
+    if (!user) throw new CustomError("Fallo en la autenticación", 401);
     res.status(200).json({ user });
   } catch (error) {
-    res
-      .status(error.code || 500)
-      .json({
-        message:
-          error.message ||
-          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-      });
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
   }
 };
 
@@ -42,8 +41,9 @@ const addUser = async (req, res) => {
     const { name, phone, email, password, admin } = req.body;
     const salt = await bcrypt.genSalt(10);
     const passwordEncrypted = await bcrypt.hash(password, salt);
-    const existingUser = await User.findOne({email:req.body.email})
-    if(existingUser) throw new CustomError("Ya existe un usuario con ese Correo", 401);
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser)
+      throw new CustomError("Ya existe un usuario con ese Correo", 401);
     const newUser = new User({
       name,
       phone,
@@ -56,13 +56,11 @@ const addUser = async (req, res) => {
       .status(201)
       .json({ message: "El usuario se creó correctamente", user: userSaved });
   } catch (error) {
-    res
-      .status(error.code || 500)
-      .json({
-        message:
-          error.message ||
-          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-      });
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
   }
 };
 const login = async (req, res) => {
@@ -81,9 +79,11 @@ const login = async (req, res) => {
       .status(200)
       .json({ message: "Ingreso correcto", ok: true, user, token });
   } catch (error) {
-    res
-    .status(error.code || 500)
-    .json({ message: error.message || "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde." });
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
   }
 };
 
@@ -94,31 +94,29 @@ const deleteUser = async (req, res) => {
     if (!userRemoved) throw new CustomError("Usuario no encontrado", 404);
     res.status(200).json({ message: "El usuario ha sido eliminado" });
   } catch (error) {
-    res
-      .status(error.code || 500)
-      .json({
-        message:
-          error.message ||
-          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-      });
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
   }
 };
 
-const editUser = async (req,res) =>{
-    try {
-      const {id, fields} =req.body;
-      const updatedUser = await User.findByIdAndUpdate(id,fields,{new:true})
-      res.status(200).json({message:"El usuario ha sido editado con éxito", updatedUser})
-    } catch (error) {
-      res
-      .status(error.code || 500)
-      .json({
-        message:
-          error.message ||
-          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-      })
-    }
-}
+const editUser = async (req, res) => {
+  try {
+    const { id, fields } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(id, fields, { new: true });
+    res
+      .status(200)
+      .json({ message: "El usuario ha sido editado con éxito", updatedUser });
+  } catch (error) {
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
+  }
+};
 
 module.exports = {
   getUsers,
