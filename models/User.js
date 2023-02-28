@@ -13,13 +13,21 @@ const UserSchema = new Schema({
     },
     password:{
         type:String,
-        select:false,
         required:[true, "La contraseña es obligatoria"]
     },
     admin:{
         type:Boolean,
         default:false,
     }
-})
+},{
+versionKey:false,
+timestamps:true,
+});
+
+UserSchema.methods.toJSON = function () {
+    const {password, ...user} = this.toObject();
+    return user;
+}
+
 
 module.exports = model("User", UserSchema)
