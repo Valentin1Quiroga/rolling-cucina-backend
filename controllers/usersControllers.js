@@ -68,7 +68,7 @@ const login = async (req, res) => {
     if (!email || !password)
       throw new CustomError("Los campos son obligatorios", 400);
     const user = await User.findOne({ email });
-    if (!user) throw new CustomError("Usuario no encontrado", 404);
+    if (!user) throw new CustomError("Email Incorrecto", 404);
     const passOk = await bcrypt.compare(password, user.password);
     if (!passOk) throw new CustomError("Contraseña incorrecta", 400);
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
