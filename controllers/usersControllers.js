@@ -5,7 +5,7 @@ const User = require("../models/User");
 const CustomError = require("../utils/CustomErrors");
 
 const getUsers = async (req, res) => {
-  try {
+  try {                         
     let users;
     let counts;
     [users, counts] = await Promise.all([User.find(), User.countDocuments()]);
@@ -34,6 +34,7 @@ const getAuth = async (req, res) => {
     });
   }
 };
+
 
 const addUser = async (req, res) => {
   try {
@@ -99,7 +100,23 @@ const deleteUser = async (req, res) => {
         "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
     });
   }
-};
+}; 
+
+
+// const getUserToEdit = async (req, res) => {
+//   try {
+//     const {id} = req.body;
+//     const userToEdit = await User.findById(id)
+//     res.status(200).json({ userToEdit });
+//   } catch (error) {
+//     res.status(error.code || 500).json({
+//       message:
+//         error.message ||
+//         "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+//     });
+//   }
+// };
+
 
 const editUser = async (req, res) => {
   try {
