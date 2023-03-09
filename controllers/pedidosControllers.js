@@ -4,7 +4,7 @@ const CustomError = require("../utils/CustomErrors");
 //Controlador GET a traves del cual se obtiene el array de pedidos totales en el restaurante (pendientes y listos)
 const getPedido = async (req, res) => {
   try {
-    const pedidos = await Pedido.find();
+    const pedidos = await Pedido.find().populate("user", "name -_id");
     res.status(200).json({ pedidos });
   } catch (error) {
     res.status(error.code || 500).json({
