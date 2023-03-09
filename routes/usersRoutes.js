@@ -9,14 +9,16 @@ const {
   login,
   deleteUser,
   editUser,
+  getUserToEdit,
 } = require("../controllers/usersControllers");
 const auth = require("../middlewares/auth");
 const validateFields = require("../middlewares/validateFields");
 const verifyRole = require("../middlewares/verifyRole");
 const { checkIfUserExists } = require("../utils/customValidations");
 
-router.get("/", getUsers);
 router.get("/auth", auth, getAuth);
+router.get("/:id?", getUsers);
+// router.get("/", getUserToEdit);
 router.post(
   "/",
   [

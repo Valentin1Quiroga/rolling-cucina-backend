@@ -16,7 +16,7 @@ const getPedido = async (req, res) => {
 };
 const getUserPedido = async (req, res) => {
   try {
-    const id = req.id;
+    const id = req.params;
     const pedidos = await Pedido.find((user = id));
     res.status(200).json({ pedidos });
   } catch (error) {
