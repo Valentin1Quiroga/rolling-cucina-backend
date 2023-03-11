@@ -69,7 +69,7 @@ const deleteMenu = async (req, res) => {
 const editMenu = async (req, res) => {
   try {
     const { id, fields } = req.body;
-    const updatedMenu = await User.findByIdAndUpdate(id, fields, { new: true });
+    const updatedMenu = await Menu.findByIdAndUpdate(id, fields, { new: true });
     res
       .status(200)
       .json({ message: "El menu ha sido editado con éxito", updatedMenu });
