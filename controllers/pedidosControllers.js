@@ -94,7 +94,6 @@ const editPedido = async (req, res) => {
 };
 module.exports = {
   getPedido,
-  getUserPedido,
   addPedido,
   deletePedido,
   editPedido,
