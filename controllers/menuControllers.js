@@ -4,8 +4,15 @@ const CustomError = require("../utils/CustomErrors");
 //Controlador GET a traves del cual se obtiene el array de menus disponibles en la carta del retaurante
 const getMenu = async (req, res) => {
   try {
-    const menus = await Menu.find();
-    res.status(200).json({ menus });
+    const { id } = req.params;
+    if (id) {
+      const menu = await Menu.findById(id);
+      if (!menu) throw new CustomError("Menú no encontrado", 404);
+      res.status(200).json({ menu });
+    } else {
+      const menus = await Menu.find();
+      res.status(200).json({ menus });
+    }
   } catch (error) {
     res
       .status(error.code || 500)
@@ -21,7 +28,7 @@ const getMenu = async (req, res) => {
 //     } catch (error) {
 //         res
 //         .status(error.code || 500)
-//         .json({ message: error.message || "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde." });      
+//         .json({ message: error.message || "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde." });
 //     }
 // }
 //Controlador POST con el cual se agrega un nuevo menu a la carta
@@ -50,13 +57,11 @@ const deleteMenu = async (req, res) => {
       );
     res.status(200).json({ message: "Menu borrado" });
   } catch (error) {
-    res
-      .status(error.code || 500)
-      .json({
-        message:
-          error.message ||
-          "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-      });
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
   }
 };
 
