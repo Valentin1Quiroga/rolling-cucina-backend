@@ -4,8 +4,15 @@ const CustomError = require("../utils/CustomErrors");
 //Controlador GET a traves del cual se obtiene el array de pedidos totales en el restaurante (pendientes y listos)
 const getPedido = async (req, res) => {
   try {
-    const pedidos = await Pedido.find().populate("user", "name -_id");
-    res.status(200).json({ pedidos });
+    const { id } = req.params;
+    if (id) {
+      const pedido = await Pedido.findById(id);
+      if (!pedido) throw new CustomError("Pedido no encontrado", 404);
+      res.status(200).json({ pedido });
+    } else {
+      const pedidos = await Pedido.find().populate("user", "name -_id");
+      res.status(200).json({ pedidos });
+    }
   } catch (error) {
     res.status(error.code || 500).json({
       message:
@@ -14,19 +21,19 @@ const getPedido = async (req, res) => {
     });
   }
 };
-const getUserPedido = async (req, res) => {
-  try {
-    const id = req.params;
-    const pedidos = await Pedido.find((user = id));
-    res.status(200).json({ pedidos });
-  } catch (error) {
-    res.status(error.code || 500).json({
-      message:
-        error.message ||
-        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-    });
-  }
-};
+// const getUserPedido = async (req, res) => {
+//   try {
+//     const id = req.params;
+//     const pedidos = await Pedido.find((user = id));
+//     res.status(200).json({ pedidos });
+//   } catch (error) {
+//     res.status(error.code || 500).json({
+//       message:
+//         error.message ||
+//         "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+//     });
+//   }
+// };
 
 //Controlador POST con el cual se agrega un nuevo pedido a la zona de preparacion
 const addPedido = async (req, res) => {
