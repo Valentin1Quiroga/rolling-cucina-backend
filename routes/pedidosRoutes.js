@@ -14,7 +14,7 @@ const auth = require("../middlewares/auth");
 const verifyRole = require("../middlewares/verifyRole");
 const router = Router();
 
-// router.get("/userPedido", getUserPedido);
+router.get("/userPedido", auth, getUserPedido);
 router.get("/:id?", getPedido);
 router.post(
   "/",

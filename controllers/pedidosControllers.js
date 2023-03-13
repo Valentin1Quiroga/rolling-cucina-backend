@@ -21,19 +21,20 @@ const getPedido = async (req, res) => {
     });
   }
 };
-// const getUserPedido = async (req, res) => {
-//   try {
-//     const id = req.params;
-//     const pedidos = await Pedido.find((user = id));
-//     res.status(200).json({ pedidos });
-//   } catch (error) {
-//     res.status(error.code || 500).json({
-//       message:
-//         error.message ||
-//         "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
-//     });
-//   }
-// };
+const getUserPedido = async (req, res) => {
+  try {
+    const id = req.id;
+    const pedidos = await Pedido.find({ user: id }).populate("user");
+    if (!pedidos) throw new CustomError("Usuario no realizo pedidos", 404);
+    res.status(200).json({ pedidos });
+  } catch (error) {
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
+  }
+};
 
 //Controlador POST con el cual se agrega un nuevo pedido a la zona de preparacion
 const addPedido = async (req, res) => {
@@ -94,6 +95,7 @@ const editPedido = async (req, res) => {
 };
 module.exports = {
   getPedido,
+  getUserPedido,
   addPedido,
   deletePedido,
   editPedido,
