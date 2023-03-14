@@ -79,7 +79,7 @@ const deletePedido = async (req, res) => {
 const editPedido = async (req, res) => {
   try {
     const { id, fields } = req.body;
-    const updatedPedido = await User.findByIdAndUpdate(id, fields, {
+    const updatedPedido = await Pedido.findByIdAndUpdate(id, fields, {
       new: true,
     });
     res
