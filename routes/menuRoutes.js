@@ -5,6 +5,7 @@ const validateFields = require("../middlewares/validateFields");
 
 const {
   getMenu,
+  // getSearchedMenu,
   addMenu,
   deleteMenu,
   editMenu,
@@ -13,7 +14,8 @@ const auth = require("../middlewares/auth");
 const verifyRole = require("../middlewares/verifyRole");
 const router = Router();
 
-router.get("/", getMenu);
+router.get("/:id?", getMenu);
+// router.get("/:name?", getSearchedMenu);
 router.post(
   "/",
   [

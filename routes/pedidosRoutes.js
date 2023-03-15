@@ -8,12 +8,14 @@ const {
   addPedido,
   deletePedido,
   editPedido,
+  getUserPedido,
 } = require("../controllers/pedidosControllers");
 const auth = require("../middlewares/auth");
 const verifyRole = require("../middlewares/verifyRole");
 const router = Router();
 
-router.get("/", getPedido);
+router.get("/userPedido", auth, getUserPedido);
+router.get("/:id?", getPedido);
 router.post(
   "/",
   [

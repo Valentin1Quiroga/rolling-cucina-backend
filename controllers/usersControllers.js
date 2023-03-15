@@ -6,11 +6,18 @@ const CustomError = require("../utils/CustomErrors");
 
 const getUsers = async (req, res) => {
   try {
-    let users;
-    let counts;
-    [users, counts] = await Promise.all([User.find(), User.countDocuments()]);
+    const { id } = req.params;
+    if (id) {
+      const user = await User.findById(id);
+      if (!user) throw new CustomError("Usuario no encontrado", 404);
+      res.status(200).json({ user });
+    } else {
+      let users;
+      let counts;
+      [users, counts] = await Promise.all([User.find(), User.countDocuments()]);
 
-    res.status(200).json({ users, counts });
+      res.status(200).json({ users, counts });
+    }
   } catch (error) {
     res.status(error.code || 500).json({
       message:
@@ -68,7 +75,7 @@ const login = async (req, res) => {
     if (!email || !password)
       throw new CustomError("Los campos son obligatorios", 400);
     const user = await User.findOne({ email });
-    if (!user) throw new CustomError("Usuario no encontrado", 404);
+    if (!user) throw new CustomError("Email Incorrecto", 404);
     const passOk = await bcrypt.compare(password, user.password);
     if (!passOk) throw new CustomError("Contraseña incorrecta", 400);
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
@@ -101,6 +108,20 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const getUserToEdit = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const userToEdit = await User.findById(id);
+    res.status(200).json({ userToEdit });
+  } catch (error) {
+    res.status(error.code || 500).json({
+      message:
+        error.message ||
+        "Ha ocurrido un problema inesperado. Por favor intente de nuevo mas tarde.",
+    });
+  }
+};
+
 const editUser = async (req, res) => {
   try {
     const { id, fields } = req.body;
@@ -124,4 +145,5 @@ module.exports = {
   login,
   deleteUser,
   editUser,
+  getUserToEdit,
 };
